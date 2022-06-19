@@ -1,6 +1,5 @@
-<html>
-<body>
-
+{% extends "layout.html" %}
+{% block body %}
 
 <p>These are the tasks</p><br>
 {% for tod in todos %}
@@ -9,7 +8,8 @@
 {% endfor %}
 
 
-</body>
+{% endblock body %}
+    
 
 
-</html>
+

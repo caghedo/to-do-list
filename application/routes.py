@@ -7,8 +7,11 @@ from flask import redirect, url_for, render_template
 
 @app.route('/')
 def index():
-    todo=Todos.query.first()
-    return f'{todo.task}{todo.completed}'
+    return render_template('layout.html')
+
+@app.route('/about')
+def home():
+    return render_template('home.html')
 
 @app.route('/alltasks')
 def done():
@@ -22,4 +25,4 @@ def done():
 @app.route('/firsttask')
 def htmldone():
     todo=Todos.query.all()
-    return render_template("about.html",todos=todo)
+    return render_template("tasks.html",todos=todo)
