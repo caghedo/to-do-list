@@ -1,9 +1,16 @@
 {% extends "layout.html" %}
 {% block body %}
-<p>This is the about page, if you have any questions please contact us on the number<br>
-073485729857295. OK?
-</p>
-
-
+<div class='form'>
+    <form method='POST' action=''>
+        {{ form.hidden_tag() }}
+        {{ form.first_name.label }} {{ form.first_name }}
+        <br>
+        {{ form.last_name.label }} {{ form.last_name }}
+        <br>
+        {{ form.submit }}
+        <br>
+    {{ message }}
+    </form>
+</div>
 
 {% endblock body %}
