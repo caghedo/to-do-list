@@ -1,0 +1,10 @@
+{% extends "userslayout.html" %}
+{% block body %}
+{% for t in user%}
+<p>Id:{{t.id}}<br>
+First Name:{{t.first_name}}<br>
+Last Name:{{t.last_name}}</p><br>
+{% endfor %}
+
+
+{% endblock body %}

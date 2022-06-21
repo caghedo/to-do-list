@@ -1,5 +1,5 @@
 from application import db
-from application.models import Todos
+from application.models import Todos,Users
 
 db.drop_all()
 db.create_all()

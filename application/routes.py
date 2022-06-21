@@ -1,14 +1,10 @@
 from application import app, db
-from application.models import Todos
+from application.models import Todos,Users
 from flask import Flask, redirect, url_for, render_template, request
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from application.forms import BasicForm,UpdateForm,DeleteForm
 
 
-class BasicForm(FlaskForm):
-    first_name = StringField('First Name')
-    last_name = StringField('Last Name')
-    submit = SubmitField('Add Name')
+
 
 app.config['SECRET_KEY'] = 'YOUR_SECRET_KEY'
 
@@ -17,17 +13,61 @@ app.config['SECRET_KEY'] = 'YOUR_SECRET_KEY'
 def index():
     message = ""
     form = BasicForm()
-
+    
+    firstname=form.first_name.data
+    lastname=form.last_name.data
+    
     if request.method == 'POST':
-        first_name = form.first_name.data
-        last_name = form.last_name.data
+        if form.validate_on_submit():
+            firstname=form.first_name.data
+            lastname=form.last_name.data
+    
+            if len(firstname) == 0 or len(lastname) == 0:
+                message = "Please supply both first and last name"
+            else:
+                message = f'Thank you, {firstname} {lastname}'
+            
+            user1=Users(  
+            first_name = form.first_name.data,
+            last_name = form.last_name.data)
 
-        if len(first_name) == 0 or len(last_name) == 0:
-            message = "Please supply both first and last name"
-        else:
-            message = f'Thank you, {first_name} {last_name}'
+            db.session.add(user1)
+            db.session.commit()
+    firstname=form.first_name.data
+    lastname=form.last_name.data
+    
 
+    
     return render_template('home.html', form=form, message=message)
+
+@app.route('/users')
+def users():
+    user=Users.query.all()
+    return render_template('users.html',user=user)
+
+@app.route('/update', methods=['GET','POST'])
+def update():
+    form=UpdateForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            user=Users.query.get(form.id.data)
+            user.first_name=form.first_name.data
+            user.last_name=form.last_name.data
+            db.session.commit()
+    return render_template('update.html',form=form)
+
+    
+    
+@app.route('/delete',methods=['GET','POST'])
+def delete():
+    form=DeleteForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            user=Users.query.get(form.id.data)
+            user.first_name=""
+            user.last_name=""
+            db.session.commit()
+    return render_template('delete.html',form=form)
    
 
 @app.route('/about')
